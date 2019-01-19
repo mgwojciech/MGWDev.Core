@@ -8,6 +8,10 @@ using Microsoft.SharePoint.Client;
 
 namespace MGWDev.Core.SP.Mapping
 {
+    /// <summary>
+    /// Maps LookupValue
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     public class LookupColumnMapper<T> : IColumnMapper where T : class, IEntityWithIdAndTitle, new()
     {
         public object MapColumn(string columnName, ListItem item)

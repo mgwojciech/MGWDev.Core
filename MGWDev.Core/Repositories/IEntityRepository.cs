@@ -10,7 +10,7 @@ namespace MGWDev.Core.Repositories
     /// <summary>
     /// Abstraction for data access layer
     /// </summary>
-    /// <typeparam name="T">Returned type</typeparam>
+    /// <typeparam name="T">Entity type</typeparam>
     /// <typeparam name="U">Identity type</typeparam>
     public interface IEntityRepository<T, U> where T : class
     {

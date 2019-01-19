@@ -7,6 +7,9 @@ using Microsoft.SharePoint.Client;
 
 namespace MGWDev.Core.SP.Mapping
 {
+    /// <summary>
+    /// Simpliest implementation of IColumnMapper. Returns same object as item[columnName]
+    /// </summary>
     public class GenericColumnMapper : IColumnMapper
     {
         public object MapColumn(string columnName, ListItem item)

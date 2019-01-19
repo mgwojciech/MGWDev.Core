@@ -52,6 +52,7 @@ namespace MGWDev.Core.SP.Mapping
                 }
             }
         }
+
         public static int GetId<T>(T entity)
         {
             var properties = entity.GetType().GetProperties().Where(pi => pi.GetSetMethod() != null);

@@ -1,4 +1,5 @@
-﻿using MGWDev.Core.SP.Repositories;
+﻿using MGWDev.Core.Repositories;
+using MGWDev.Core.SP.Repositories;
 using MGWDev.Core.SP.Utilities;
 using MGWDev.Core.Tests.Mocks;
 using MGWDev.Core.Utilities;
@@ -24,7 +25,7 @@ namespace MGWDev.Core.Tests.SP.DataAccess
             {
                 SecureString password = Common.ToSecureString(ConfigurationManager.AppSettings["UserPassword"]);
                 context.Credentials = new SharePointOnlineCredentials(ConfigurationManager.AppSettings["UserLogin"], password);
-                SPClientRepository<MockTestSPEntity> repo = new SPClientRepository<MockTestSPEntity>(context);
+                IEntityRepository<MockTestSPEntity> repo = new SPClientRepository<MockTestSPEntity>(context);
 
                 List<MockTestSPEntity> result = repo.Query(test => test.Id > 0).ToList();
 

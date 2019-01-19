@@ -8,10 +8,23 @@ using System.Threading.Tasks;
 
 namespace MGWDev.Core.SP.Mapping
 {
+    /// <summary>
+    /// Maps the entity property to sharepoint field
+    /// </summary>
+    [AttributeUsage(AttributeTargets.Property)]
     public class MappingAttribute : Attribute
     {
+        /// <summary>
+        /// Internal name of the colum
+        /// </summary>
         public string ColumnName { get; protected set; }
+        /// <summary>
+        /// Mapping strategy
+        /// </summary>
         public IColumnMapper Mapper { get; protected set; }
+        /// <summary>
+        /// Field type as text. Used to construct correct caml queries
+        /// </summary>
         public string TypeAsText { get; set; }
         public MappingAttribute(string columnName):
             this(columnName, "Text")
@@ -28,7 +41,11 @@ namespace MGWDev.Core.SP.Mapping
             TypeAsText = typeAsText;
             Mapper = Activator.CreateInstance(mapperType) as IColumnMapper;
         }
-
+        /// <summary>
+        /// Gets the mapping attribute for provided object
+        /// </summary>
+        /// <param name="obj">Property with mapping attribute</param>
+        /// <returns></returns>
         public static MappingAttribute GetMappingAttribute(ICustomAttributeProvider obj)
         {
             MappingAttribute result = obj.GetCustomAttributes(true).FirstOrDefault(attr => attr is MappingAttribute) as MappingAttribute;

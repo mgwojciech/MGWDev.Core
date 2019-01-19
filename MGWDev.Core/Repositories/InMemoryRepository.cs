@@ -7,6 +7,11 @@ using System.Threading.Tasks;
 
 namespace MGWDev.Core.Repositories
 {
+    /// <summary>
+    /// Simple mock implementation of IEntityRepository
+    /// </summary>
+    /// <typeparam name="T">Entity type</typeparam>
+    /// <typeparam name="U">Identity type</typeparam>
     public class InMemoryRepository<T, U> : IEntityRepository<T, U> where T : class
     {
         public List<T> Entities { get; protected set; }
