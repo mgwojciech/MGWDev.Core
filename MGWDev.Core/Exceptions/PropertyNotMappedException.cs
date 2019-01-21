@@ -5,7 +5,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MGWDev.Core.SP.Exceptions
+namespace MGWDev.Core.Exceptions
 {
     public class PropertyNotMappedException : Exception
     {

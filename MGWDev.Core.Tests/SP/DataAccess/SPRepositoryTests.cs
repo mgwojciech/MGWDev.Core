@@ -18,7 +18,7 @@ namespace MGWDev.Core.Tests.SP.DataAccess
     [TestClass]
     public class SPRepositoryTests
     {
-        [TestMethod]
+        //[TestMethod]
         public void SPRepository_Test_GetAllData()
         {
             using (ClientContext context = new ClientContext(ConfigurationManager.AppSettings["SiteUrl"]))
@@ -33,7 +33,7 @@ namespace MGWDev.Core.Tests.SP.DataAccess
             }
         }
 
-        [TestMethod]
+        //[TestMethod]
         public void SPRepository_Test_Get_ByLookupId()
         {
             using (ClientContext context = new ClientContext(ConfigurationManager.AppSettings["SiteUrl"]))
@@ -48,7 +48,7 @@ namespace MGWDev.Core.Tests.SP.DataAccess
             }
         }
 
-        [TestMethod]
+        //[TestMethod]
         public void SPRepository_Test_Get_ByLookupValue()
         {
             using (ClientContext context = new ClientContext(ConfigurationManager.AppSettings["SiteUrl"]))

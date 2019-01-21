@@ -51,7 +51,6 @@
     <Compile Include="DataAccess\ListItemAccessor.cs" />
     <Compile Include="DataAccess\ListItemCollectionEnumerable.cs" />
     <Compile Include="DataAccess\ListItemCollectionEnumerator.cs" />
-    <Compile Include="Exceptions\PropertyNotMappedException.cs" />
     <Compile Include="Mapping\GenericColumnMapper.cs" />
     <Compile Include="Mapping\IColumnMapper.cs" />
     <Compile Include="Mapping\ItemMappingHelper.cs" />

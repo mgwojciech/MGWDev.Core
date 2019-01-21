@@ -1,4 +1,4 @@
-﻿using MGWDev.Core.SP.Exceptions;
+﻿using MGWDev.Core.Exceptions;
 using MGWDev.Core.SP.Utilities;
 using MGWDev.Core.Tests.Mocks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;

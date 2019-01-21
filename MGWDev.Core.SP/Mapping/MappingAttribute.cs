@@ -1,4 +1,4 @@
-﻿using MGWDev.Core.SP.Exceptions;
+﻿using MGWDev.Core.Mapping;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,12 +12,8 @@ namespace MGWDev.Core.SP.Mapping
     /// Maps the entity property to sharepoint field
     /// </summary>
     [AttributeUsage(AttributeTargets.Property)]
-    public class MappingAttribute : Attribute
+    public class MappingAttribute : BasicMappingAttribute
     {
-        /// <summary>
-        /// Internal name of the colum
-        /// </summary>
-        public string ColumnName { get; protected set; }
         /// <summary>
         /// Mapping strategy
         /// </summary>
@@ -35,23 +31,11 @@ namespace MGWDev.Core.SP.Mapping
             this(columnName, typeAsText, typeof(GenericColumnMapper))
         {
         }
-        public MappingAttribute(string columnName, string typeAsText, Type mapperType)
+        public MappingAttribute(string columnName, string typeAsText, Type mapperType):base(columnName)
         {
             ColumnName = columnName;
             TypeAsText = typeAsText;
             Mapper = Activator.CreateInstance(mapperType) as IColumnMapper;
-        }
-        /// <summary>
-        /// Gets the mapping attribute for provided object
-        /// </summary>
-        /// <param name="obj">Property with mapping attribute</param>
-        /// <returns></returns>
-        public static MappingAttribute GetMappingAttribute(ICustomAttributeProvider obj)
-        {
-            MappingAttribute result = obj.GetCustomAttributes(true).FirstOrDefault(attr => attr is MappingAttribute) as MappingAttribute;
-            if (result != null)
-                return result;
-            throw new PropertyNotMappedException(obj);
         }
     }
 }

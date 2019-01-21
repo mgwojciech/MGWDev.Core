@@ -1,5 +1,4 @@
 ﻿using MGWDev.Core.Model;
-using MGWDev.Core.SP.Exceptions;
 using MGWDev.Core.SP.Mapping;
 using System;
 using System.Collections.Generic;
@@ -21,7 +20,7 @@ namespace MGWDev.Core.SP.Utilities
         {
             get
             {
-                return MappingAttribute.GetMappingAttribute(CurrentMember);
+                return MappingAttribute.GetMappingAttribute(CurrentMember) as MappingAttribute;
             }
         }
         public virtual string Translate(Expression expression)
@@ -172,7 +171,7 @@ namespace MGWDev.Core.SP.Utilities
                             return VisitConstant(Expression.Constant(fn.DynamicInvoke(null), member.Type));
                     }
                 }
-                else if(member.Expression is MemberExpression && MappingAttribute.GetMappingAttribute(((MemberExpression)member.Expression).Member).TypeAsText == "Lookup")
+                else if(member.Expression is MemberExpression && ((MappingAttribute)MappingAttribute.GetMappingAttribute(((MemberExpression)member.Expression).Member)).TypeAsText == "Lookup")
                 {
                     //Get parent member as current member is primitive
                     CurrentMember = (member.Expression as MemberExpression).Member;

@@ -1,4 +1,5 @@
-﻿using MGWDev.Core.SP.Mapping;
+﻿using MGWDev.Core.Mapping;
+using MGWDev.Core.SP.Mapping;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,11 +28,7 @@ namespace MGWDev.Core.SP.Utilities
             var mappingProperties = typeof(T).GetProperties().Where(mp => mp.GetSetMethod() != null);
             foreach (var mappedProperty in mappingProperties)
             {
-                MappingAttribute mappingAttribute = mappedProperty.GetCustomAttributes(true).FirstOrDefault(attr => attr is MappingAttribute) as MappingAttribute;
-                if (mappingAttribute != null)
-                {
-                    builder.Append(String.Format("<FieldRef Name=\"{0}\" />", mappingAttribute.ColumnName));
-                }
+                    builder.Append(String.Format("<FieldRef Name=\"{0}\" />", BasicMappingAttribute.GetMappingColumnName(mappedProperty)));
             }
             builder.Append("</ViewFields>");
             return builder.ToString();

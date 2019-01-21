@@ -55,6 +55,7 @@
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Net.Http" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Core\Repo\EventReceiverRepositoryTests.cs" />
@@ -62,7 +63,12 @@
     <Compile Include="Mocks\MockSPEntity.cs" />
     <Compile Include="Mocks\MockSPSPLookupTarget.cs" />
     <Compile Include="Mocks\MockTestSPEntity.cs" />
+    <Compile Include="Mocks\REST\Category.cs" />
+    <Compile Include="Mocks\REST\Product.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="REST\ExpressionToRESTMapperTests.cs" />
+    <Compile Include="REST\RESTRepositoryTests.cs" />
+    <Compile Include="REST\RESTUrlBuilderTests.cs" />
     <Compile Include="SP\DataAccess\SPRepositoryTests.cs" />
     <Compile Include="SP\Utilities\ExpressionToCamlMapperTests.cs" />
   </ItemGroup>
@@ -71,6 +77,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\MGWDev.Core.REST\MGWDev.Core.REST.csproj">
+      <Project>{4b1f8cc9-cefe-455d-88e9-3697fcf8df1f}</Project>
+      <Name>MGWDev.Core.REST</Name>
+    </ProjectReference>
     <ProjectReference Include="..\MGWDev.Core.SP\MGWDev.Core.SP.csproj">
       <Project>{49d26fb1-7111-42d7-a349-1030e2f592c9}</Project>
       <Name>MGWDev.Core.SP</Name>

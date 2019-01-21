@@ -4,13 +4,14 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{191A6938-743C-4B0B-AED3-88A9B937A3CC}</ProjectGuid>
+    <ProjectGuid>{4B1F8CC9-CEFE-455D-88E9-3697FCF8DF1F}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>MGWDev.Core</RootNamespace>
-    <AssemblyName>MGWDev.Core</AssemblyName>
+    <RootNamespace>MGWDev.Core.REST</RootNamespace>
+    <AssemblyName>MGWDev.Core.REST</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -30,47 +31,28 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
-    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Exceptions\PropertyNotMappedException.cs" />
-    <Compile Include="Mapping\BasicMappingAttribute.cs" />
-    <Compile Include="Model\IEntityWithIdAndTitle.cs" />
-    <Compile Include="Receiver\EventDrivenReceiver.cs" />
-    <Compile Include="Receiver\EventType.cs" />
-    <Compile Include="Receiver\IEventReceiver.cs" />
-    <Compile Include="Model\IEntityWithId.cs" />
+    <Compile Include="Model\RESTResponse.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Repositories\EventReceiverRepository.cs" />
-    <Compile Include="Repositories\IEntityRepository.cs" />
-    <Compile Include="Repositories\InMemoryRepository.cs" />
-    <Compile Include="Repositories\JSONFileRepository.cs" />
-    <Compile Include="Repositories\XMLFileRepository.cs" />
-    <Compile Include="Utilities\DataRecordMapper.cs" />
-    <Compile Include="Utilities\EntityBuffer.cs" />
-    <Compile Include="Utilities\FileHelper.cs" />
-    <Compile Include="Utilities\IHttpHelper.cs" />
-    <Compile Include="Utilities\ISerializer.cs" />
-    <Compile Include="Utilities\JSONSerilizer.cs" />
-    <Compile Include="Utilities\PropertyHelper.cs" />
-    <Compile Include="Utilities\HttpClientHttpHelper.cs" />
+    <Compile Include="Repository\RESTRepository.cs" />
+    <Compile Include="Utilities\ExpressionToRESTMapper.cs" />
+    <Compile Include="Utilities\IUrlBuilder.cs" />
+    <Compile Include="Utilities\RESTUrlBuilder.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
-    <None Include="packages.config">
-      <SubType>Designer</SubType>
-    </None>
+    <ProjectReference Include="..\MGWDev.Core\MGWDev.Core.csproj">
+      <Project>{191a6938-743c-4b0b-aed3-88a9b937a3cc}</Project>
+      <Name>MGWDev.Core</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
