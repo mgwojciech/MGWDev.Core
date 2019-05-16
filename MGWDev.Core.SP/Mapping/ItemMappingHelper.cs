@@ -21,7 +21,8 @@ namespace MGWDev.Core.SP.Mapping
                     try
                     {
                         object mappedValue = mappingAttribute.Mapper.MapColumn(mappingAttribute.ColumnName, item);
-                        mappedProperty.SetValue(result, mappedValue);
+                        if(mappingAttribute.ColumnName.ToUpperInvariant() != "ID")
+                            mappedProperty.SetValue(result, mappedValue);
                     }
                     catch
                     {
