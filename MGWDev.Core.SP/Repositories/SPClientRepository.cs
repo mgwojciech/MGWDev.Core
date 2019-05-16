@@ -70,7 +70,7 @@ namespace MGWDev.Core.SP.Repositories
         {
             List<T> results = new List<T>();
 
-            string whereSection = CamlMapper.Translate(query.Body);
+            string whereSection = CamlMapper.Translate(query.Body, query.Parameters.FirstOrDefault());
 
             CamlQuery caml = new CamlQuery();
             caml.ViewXml = String.Format("<View><Query>{0}</Query><RowLimit>{1}</RowLimit>{2}</View>", whereSection, top, Common.GetViewFields<T>());

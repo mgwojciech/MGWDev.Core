@@ -1,7 +1,9 @@
-﻿using MGWDev.Core.Model;
+﻿using MGWDev.Core.Exceptions;
+using MGWDev.Core;
 using MGWDev.Core.SP.Mapping;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -15,6 +17,8 @@ namespace MGWDev.Core.SP.Utilities
     {
         public Dictionary<ExpressionType, Func<Expression, XElement>> ExtensionMappings { get; set; } = new Dictionary<ExpressionType, Func<Expression, XElement>>();
         private XElement query = new XElement("Where");
+        private ParameterExpression QueryParameter;
+
         private MemberInfo CurrentMember { get; set; }
         private MappingAttribute CurrentMembersMappingAttribute
         {
@@ -23,8 +27,9 @@ namespace MGWDev.Core.SP.Utilities
                 return MappingAttribute.GetMappingAttribute(CurrentMember) as MappingAttribute;
             }
         }
-        public virtual string Translate(Expression expression)
+        public virtual string Translate(Expression expression, ParameterExpression parameterExpression)
         {
+            QueryParameter = parameterExpression;
             query.Add(Visit(expression));
             return query.ToString(SaveOptions.DisableFormatting);
         }
@@ -171,14 +176,30 @@ namespace MGWDev.Core.SP.Utilities
                             return VisitConstant(Expression.Constant(fn.DynamicInvoke(null), member.Type));
                     }
                 }
-                else if(member.Expression is MemberExpression && ((MappingAttribute)MappingAttribute.GetMappingAttribute(((MemberExpression)member.Expression).Member)).TypeAsText == "Lookup")
+                else if(member.Expression is MemberExpression)
                 {
+                    try
+                    {
+                        MappingAttribute currentMappingAttribute = ((MappingAttribute)MappingAttribute.GetMappingAttribute(((MemberExpression)member.Expression).Member));
+                        if(currentMappingAttribute.TypeAsText == "Lookup")
+                        {
+                            CurrentMember = (member.Expression as MemberExpression).Member;
+                            if (member.Member.Name == "Id")
+                                return new XElement("FieldRef", new XAttribute("Name", CurrentMembersMappingAttribute.ColumnName), new XAttribute("LookupId", "TRUE"));
+                            else
+                                return new XElement("FieldRef", new XAttribute("Name", CurrentMembersMappingAttribute.ColumnName));
+                        }
+                    }
+                    catch(PropertyNotMappedException)
+                    {
+                        if ((member.Expression as MemberExpression).Member.Name != QueryParameter.Name)
+                        {
+                            LambdaExpression lambda = Expression.Lambda(member);
+                            Delegate fn = lambda.Compile();
+                            return VisitConstant(Expression.Constant(fn.DynamicInvoke(null), member.Type));
+                        }
+                    }
                     //Get parent member as current member is primitive
-                    CurrentMember = (member.Expression as MemberExpression).Member;
-                    if(member.Member.Name == "Id")
-                        return new XElement("FieldRef", new XAttribute("Name", CurrentMembersMappingAttribute.ColumnName), new XAttribute("LookupId", "TRUE"));
-                    else
-                        return new XElement("FieldRef", new XAttribute("Name", CurrentMembersMappingAttribute.ColumnName));
                 }
                 return new XElement("FieldRef", new XAttribute("Name", CurrentMembersMappingAttribute.ColumnName));
             }
@@ -198,7 +219,7 @@ namespace MGWDev.Core.SP.Utilities
         public static string MapExpressionToCaml<T>(Expression<Func<T,bool>> query)
         {
             ExpressionToCamlMapper<T> mapper = new ExpressionToCamlMapper<T>();
-            return mapper.Translate(query.Body);
+            return mapper.Translate(query.Body, query.Parameters.FirstOrDefault());
         }
     }
 }

@@ -23,6 +23,19 @@ namespace MGWDev.Core.Tests.SP.Utilities
         }
 
         [TestMethod]
+        public void ExpressionToCamlMapper_Test_SimpleWhere_ComplexObject()
+        {
+            MockSPEntity test = new MockSPEntity()
+            {
+                Title = "Test"
+            };
+            string expected = "<Where><Eq><FieldRef Name=\"Title\" /><Value Type=\"Text\">Test</Value></Eq></Where>";
+            string actual = ExpressionToCamlMapper<MockSPEntity>.MapExpressionToCaml<MockSPEntity>(me => me.Title == test.Title);
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
         public void ExpressionToCamlMapper_Test_LookupTitle()
         {
             string expected = "<Where><Eq><FieldRef Name=\"TestLookup\" /><Value Type=\"Lookup\">Test</Value></Eq></Where>";
@@ -54,6 +67,18 @@ namespace MGWDev.Core.Tests.SP.Utilities
         {
             string expected = "<Where><And><Eq><FieldRef Name=\"Title\" /><Value Type=\"Text\">Test</Value></Eq><Leq><FieldRef Name=\"Created\" /><Value Type=\"DateTime\">2019-01-15T00:00:00</Value></Leq></And></Where>";
             string actual = ExpressionToCamlMapper<MockSPEntity>.MapExpressionToCaml<MockSPEntity>(me => me.Title == "Test" && me.CreatedDate <= new DateTime(2019,01,15));
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void ExpressionToCamlMapper_Test_FromComplexObject()
+        {
+            MockSPEntity test = new MockSPEntity(){
+                CreatedDate = new DateTime(2019,01,15) 
+            };
+            string expected = "<Where><And><Eq><FieldRef Name=\"Title\" /><Value Type=\"Text\">Test</Value></Eq><Leq><FieldRef Name=\"Created\" /><Value Type=\"DateTime\">2019-01-15T00:00:00</Value></Leq></And></Where>";
+            string actual = ExpressionToCamlMapper<MockSPEntity>.MapExpressionToCaml<MockSPEntity>(me => me.Title == "Test" && me.CreatedDate <= test.CreatedDate);
 
             Assert.AreEqual(expected, actual);
         }
