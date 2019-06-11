@@ -153,7 +153,6 @@ namespace MGWDev.Core.SP.Utilities
         }
         protected virtual XElement VisitMemberAccess(MemberExpression member)
         {
-            CurrentMember = member.Member;
 
             if (member.Expression != null && member.Expression.NodeType == ExpressionType.Constant)
             {
@@ -163,6 +162,7 @@ namespace MGWDev.Core.SP.Utilities
             }
             else
             {
+                CurrentMember = member.Member;
                 if (member.Member.DeclaringType == typeof(DateTime) || member.Member.DeclaringType == typeof(Nullable<DateTime>))
                 {
                     switch (member.Member.Name)

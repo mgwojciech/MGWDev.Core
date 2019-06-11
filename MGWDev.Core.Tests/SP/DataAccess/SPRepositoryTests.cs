@@ -27,7 +27,9 @@ namespace MGWDev.Core.Tests.SP.DataAccess
                 context.Credentials = new SharePointOnlineCredentials(ConfigurationManager.AppSettings["UserLogin"], password);
                 IEntityRepository<MockTestSPEntity> repo = new SPClientRepository<MockTestSPEntity>(context);
 
-                List<MockTestSPEntity> result = repo.Query(test => test.Id > 0).ToList();
+                DateTime date = DateTime.Now;
+
+                List<MockTestSPEntity> result = repo.Query(test => test.ModifiedDate > date).ToList();
 
                 Assert.AreEqual(10, result.Count);
             }

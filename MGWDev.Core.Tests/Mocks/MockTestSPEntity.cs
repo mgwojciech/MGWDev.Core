@@ -19,6 +19,8 @@ namespace MGWDev.Core.Tests.Mocks
         public MockSPEntity LookupTarget { get; set; }
         [Mapping("Created", "DateTime")]
         public DateTime CreatedDate { get; set; }
+        [Mapping("Modified", "DateTime")]
+        public DateTime ModifiedDate { get; set; }
         [LookupMapping("Author", typeof(MockSPSPLookupTarget))]
         public MockSPSPLookupTarget Author { get; set; }
     }

@@ -34,6 +34,29 @@ namespace MGWDev.Core.Tests.SP.Utilities
 
             Assert.AreEqual(expected, actual);
         }
+        [TestMethod]
+        public void ExpressionToCamlMapper_Test_SimpleWhere_Date()
+        {
+            DateTime date = new DateTime(2019, 06, 01, 12, 00, 00);
+            string expected = "<Where><Eq><FieldRef Name=\"Created\" /><Value Type=\"DateTime\">2019-06-01T12:00:00</Value></Eq></Where>";
+            string actual = ExpressionToCamlMapper<MockSPEntity>.MapExpressionToCaml<MockSPEntity>(me => me.CreatedDate == date);
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void ExpressionToCamlMapper_Test_SimpleWhere_ComplexObject_Date()
+        {
+            MockSPEntity test = new MockSPEntity()
+            {
+                Title = "Test"
+            };
+            DateTime date = new DateTime(2019, 06, 01, 12, 00, 00);
+            string expected = "<Where><Eq><FieldRef Name=\"Created\" /><Value Type=\"DateTime\">2019-06-01T12:00:00</Value></Eq></Where>";
+            string actual = ExpressionToCamlMapper<MockSPEntity>.MapExpressionToCaml<MockSPEntity>(me => me.CreatedDate == date);
+
+            Assert.AreEqual(expected, actual);
+        }
 
         [TestMethod]
         public void ExpressionToCamlMapper_Test_LookupTitle()
