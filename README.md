@@ -7,7 +7,7 @@ To start with it create Your model
     [ListMapping("Test List")]
     public class MockSPEntity : IEntityWithIdAndTitle
     {
-        [Mapping("Id", "Counter")]
+        [Mapping("ID", "Counter")]
         public int Id { get; set; }
         [Mapping("Title", "Text")]
         public string Title { get; set; }
