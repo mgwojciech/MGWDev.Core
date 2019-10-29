@@ -14,6 +14,8 @@ namespace MGWDev.Core.REST.Repository
 {
     public class RESTRepository<T, U> : IEntityRepository<T, U> where T : class, IEntityWithId<U>
     {
+        public string OrderByField { get; set; } = "Id";
+        public bool OrderAscending { get; set; }
         public IUrlBuilder<T> UrlBuilder { get; set; } = new RESTUrlBuilder<T>();
         IHttpHelper HttpHelper { get; set; }
         public string Url { get; set; }
@@ -52,7 +54,9 @@ namespace MGWDev.Core.REST.Repository
 
         protected virtual string BuildGetUrl(Expression<Func<T, bool>> query, int top, int skip)
         {
-            string url = String.Format("{0}?$filter={1}&$top={2}&$select={3}", Url, UrlBuilder.BuildFilterClause(query), UrlBuilder.BuildTop(top), UrlBuilder.BuildSelect());
+            string orderBySegment = OrderByField + "+";
+            orderBySegment += OrderAscending ? "asc" : "desc";
+            string url = String.Format("{0}?$filter={1}&$top={2}&$select={3}&$orderby={4}", Url, UrlBuilder.BuildFilterClause(query), UrlBuilder.BuildTop(top), UrlBuilder.BuildSelect(), orderBySegment);
             if (skip > 0)
                 url += "&$skip=" + UrlBuilder.BuildSkip(skip);
             string expand = UrlBuilder.BuildExpand();

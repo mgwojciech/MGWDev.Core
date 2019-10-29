@@ -12,6 +12,28 @@ namespace MGWDev.Core.Repositories
     {
         public IList<IEventReceiver<T>> Receivers { get; protected set; }
         protected IEntityRepository<T,U> BaseRepo { get; set; }
+
+        public string OrderByField { 
+            get
+            {
+                return BaseRepo.OrderByField;
+            }
+            set
+            {
+                BaseRepo.OrderByField = value;
+            }
+        }
+        public bool OrderAscending
+        {
+            get
+            {
+                return BaseRepo.OrderAscending;
+            }
+            set
+            {
+                BaseRepo.OrderAscending = value;
+            }
+        }
         public EventReceiverRepository(IEntityRepository<T, U> baseRepo)
         {
             Receivers = new List<IEventReceiver<T>>();

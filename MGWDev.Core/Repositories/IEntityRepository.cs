@@ -14,6 +14,8 @@ namespace MGWDev.Core.Repositories
     /// <typeparam name="U">Identity type</typeparam>
     public interface IEntityRepository<T, U> where T : class
     {
+        string OrderByField { get; set; }
+        bool OrderAscending { get; set; }
         T GetById(U Id);
         IEnumerable<T> Query(Expression<Func<T, bool>> query, int top = 100, int skip = 0);
         void Add(T entity);

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MGWDev.Core.Utilities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -14,6 +15,8 @@ namespace MGWDev.Core.Repositories
     /// <typeparam name="U">Identity type</typeparam>
     public class InMemoryRepository<T, U> : IEntityRepository<T, U> where T : class
     {
+        public string OrderByField { get; set; } = "Id";
+        public bool OrderAscending { get; set; } = true;
         public List<T> Entities { get; protected set; }
         protected Func<U, Func<T, bool>> IdentityQuery { get; set; }
         public InMemoryRepository(List<T> entities, Func<U, Func<T, bool>> identityQuery)
@@ -42,7 +45,7 @@ namespace MGWDev.Core.Repositories
 
         public IEnumerable<T> Query(Expression<Func<T, bool>> query, int top = 100, int skip = 0)
         {
-            return Entities.AsQueryable().Where(query).Skip(skip).Take(top);
+            return Entities.AsQueryable().Where(query).OrderBy(OrderByField, OrderAscending).Skip(skip).Take(top);
         }
 
         public void Update(T entity)

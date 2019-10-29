@@ -61,6 +61,7 @@
     <Compile Include="Utilities\EntityBuffer.cs" />
     <Compile Include="Utilities\FileHelper.cs" />
     <Compile Include="Utilities\IHttpHelper.cs" />
+    <Compile Include="Utilities\IQueryableExtensions.cs" />
     <Compile Include="Utilities\ISerializer.cs" />
     <Compile Include="Utilities\JSONSerilizer.cs" />
     <Compile Include="Utilities\PropertyHelper.cs" />
