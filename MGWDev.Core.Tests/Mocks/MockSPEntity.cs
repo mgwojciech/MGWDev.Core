@@ -11,7 +11,7 @@ namespace MGWDev.Core.Tests.Mocks
     [ListMapping("Test List")]
     public class MockSPEntity : IEntityWithIdAndTitle
     {
-        [Mapping("Id", "Counter")]
+        [Mapping("ID", "Counter")]
         public int Id { get; set; }
         [Mapping("Title", "Text")]
         public string Title { get; set; }

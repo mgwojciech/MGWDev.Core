@@ -83,5 +83,40 @@ namespace MGWDev.Core.Tests.SP.DataAccess
                 Assert.AreEqual(10, counter);
             }
         }
+
+        [TestMethod]
+        public void SPRepository_Test_ComposeCaml_DefaultOrderBy()
+        {
+            using (ClientContext context = new ClientContext(ConfigurationManager.AppSettings["SiteUrl"]))
+            {
+                SecureString password = Common.ToSecureString(ConfigurationManager.AppSettings["UserPassword"]);
+                context.Credentials = new SharePointOnlineCredentials(ConfigurationManager.AppSettings["UserLogin"], password);
+                SPClientRepository<MockSPEntity> repo = new SPClientRepository<MockSPEntity>(context);
+
+                string expectedQuery = "<View><Query><Where><Eq><FieldRef Name=\"Title\" /><Value Type=\"Text\">Test</Value></Eq></Where></Query><RowLimit>10</RowLimit><ViewFields><FieldRef Name=\"ID\" /><FieldRef Name=\"Title\" /><FieldRef Name=\"Created\" /><FieldRef Name=\"TestLookup\" /></ViewFields><OrderBy><FieldRef Name=\"ID\" Ascending=\"FALSE\"/></OrderBy></View>";
+                string whereSection = ExpressionToCamlMapper<MockSPEntity>.MapExpressionToCaml<MockSPEntity>(me => me.Title == "Test");
+                string actualQuery = repo.ComposeQuery(whereSection, 10);
+
+                Assert.AreEqual(expectedQuery, actualQuery);
+            }
+        }
+        [TestMethod]
+        public void SPRepository_Test_ComposeCaml_CustomOrderBy()
+        {
+            using (ClientContext context = new ClientContext(ConfigurationManager.AppSettings["SiteUrl"]))
+            {
+                SecureString password = Common.ToSecureString(ConfigurationManager.AppSettings["UserPassword"]);
+                context.Credentials = new SharePointOnlineCredentials(ConfigurationManager.AppSettings["UserLogin"], password);
+                SPClientRepository<MockSPEntity> repo = new SPClientRepository<MockSPEntity>(context);
+                repo.OrderAscending = true;
+                repo.OrderByField = "Modified";
+
+                string expectedQuery = "<View><Query><Where><Eq><FieldRef Name=\"Title\" /><Value Type=\"Text\">Test</Value></Eq></Where></Query><RowLimit>10</RowLimit><ViewFields><FieldRef Name=\"ID\" /><FieldRef Name=\"Title\" /><FieldRef Name=\"Created\" /><FieldRef Name=\"TestLookup\" /></ViewFields><OrderBy><FieldRef Name=\"Modified\" Ascending=\"TRUE\"/></OrderBy></View>";
+                string whereSection = ExpressionToCamlMapper<MockSPEntity>.MapExpressionToCaml<MockSPEntity>(me => me.Title == "Test");
+                string actualQuery = repo.ComposeQuery(whereSection, 10);
+
+                Assert.AreEqual(expectedQuery, actualQuery);
+            }
+        }
     }
 }

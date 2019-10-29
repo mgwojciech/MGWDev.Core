@@ -20,6 +20,8 @@ namespace MGWDev.Core.SP.Repositories
         public ExpressionToCamlMapper<T> CamlMapper { get; set; } = new ExpressionToCamlMapper<T>();
         protected ListItemCollectionPosition Position { get; private set; }
         private int PreviousSkip { get; set; }
+        public string OrderByField { get; set; } = "ID";
+        public bool OrderAscending { get; set; }
         public SPClientRepository(ClientContext context)
         {
             Context = context;
@@ -66,6 +68,11 @@ namespace MGWDev.Core.SP.Repositories
             item.DeleteObject();
         }
 
+        public virtual string ComposeQuery(string whereSection, int top)
+        {
+            return $"<View><Query>{whereSection}</Query><RowLimit>{top}</RowLimit>{Common.GetViewFields<T>()}<OrderBy><FieldRef Name=\"{OrderByField}\" Ascending=\"{OrderAscending.ToString().ToUpperInvariant()}\"/></OrderBy></View>";
+        }
+
         public IEnumerable<T> Query(Expression<Func<T, bool>> query, int top = 100, int skip = 0)
         {
             List<T> results = new List<T>();
@@ -73,7 +80,7 @@ namespace MGWDev.Core.SP.Repositories
             string whereSection = CamlMapper.Translate(query.Body, query.Parameters.FirstOrDefault());
 
             CamlQuery caml = new CamlQuery();
-            caml.ViewXml = String.Format("<View><Query>{0}</Query><RowLimit>{1}</RowLimit>{2}</View>", whereSection, top, Common.GetViewFields<T>());
+            caml.ViewXml = ComposeQuery(whereSection, top);
             if (Position != null && skip != 0)
             {
                 if (skip - PreviousSkip > top)
@@ -81,7 +88,7 @@ namespace MGWDev.Core.SP.Repositories
                 if (PreviousSkip != skip - top)
                     throw new NotImplementedException("Unable to skip. Using SPClientRepository You can skip only one page!");
 
-                PreviousSkip = PreviousSkip + top;
+                PreviousSkip += top;
                 caml.ListItemCollectionPosition = Position;
             }
 
